@@ -11,6 +11,17 @@ const scopes = [
   'patient/*.read'
 ];
 
+const write_scopes = [
+  'user/*.*',
+  'user/Patient.*',
+  'user/Patient.write',
+  'user/*.read',
+  'patient/*.*',
+  'patient/Patient.*',
+  'patient/Patient.write',
+  'patient/*.read'
+];
+
 let routes = [
 	{
 		type: 'get',
@@ -75,6 +86,20 @@ let routes = [
 		}],
 		scopes: scopes,
 		controller: controller.getPatientById
+	},
+	{
+		type: 'put',
+		path: '/dstu2/patient/:id',
+		corsOptions: {
+			methods: ['PUT']
+		},
+		args: [{
+			name: 'id',
+			type: 'string',
+			required: true
+		}],
+		scopes: write_scopes,
+		controller: controller.updatePatient
 	}
 ];
 

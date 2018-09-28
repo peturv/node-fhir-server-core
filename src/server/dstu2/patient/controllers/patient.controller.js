@@ -1,6 +1,7 @@
 const errors = require('../../../utils/error.utils');
 const { VERSIONS } = require('../../../../constants');
 const { Patient } = require('../../resources');
+const path = require('path');
 
 
 module.exports.getPatient = (profile, logger, config) => {
@@ -90,5 +91,44 @@ module.exports.getPatientById = (profile, logger) => {
 			.catch((err) => {
 				next(errors.internal(err.message));
 			});
+	};
+};
+
+module.exports.updatePatient = (profile, logger, config) => {
+	let { serviceModule: service } = profile;
+
+	// Create a context I can pass some data through
+	let context = {
+		version: VERSIONS.DSTU2
+	};
+
+	return (req, res, next) => {
+		return service.updatePatient(req, logger, context)
+			.then((results) => {
+				if (results) {
+					let { id, created = false, resource_version } = results;
+					let resourceUrl = config.auth.resourceServer;
+
+					let status = created ? 201 : 200;
+					let date = new Date();
+
+					if (resource_version) {
+						res.set('Content-Location', `${path.join(resourceUrl, context.version, 'Patient', id, '_history', resource_version)}`);
+						res.set('ETag', `${resource_version}`);
+					}
+
+					res.type('application/json+fhir');
+					res.set('Location', `${path.join(resourceUrl, context.version, 'Patient', id)}`);
+					res.set('Last-Modified', date.toISOString());
+					res.status(status).end();
+
+				} else {
+					next(errors.notFound('Patient not found'));
+				}
+			})
+			.catch((err) => {
+				next(errors.internal(err.message));
+			});
+
 	};
 };

@@ -15,3 +15,10 @@ module.exports.getPatientById = (req, logger) => new Promise((resolve, reject) =
 	logger.info(message);
 	reject(new Error(message));
 });
+
+module.exports.updatePatient = (req, logger) => new Promise((resolve, reject) => {
+
+	let message = 'Calling mock service. Did you forget to implement \'updatePatient\'';
+	logger.info(message);
+	reject(new Error(message));
+});

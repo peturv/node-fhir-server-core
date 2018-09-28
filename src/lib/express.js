@@ -27,7 +27,7 @@ let configureMiddleware = function (app, IS_PRODUCTION) {
 
 	// Enable the body parser
 	app.use(bodyParser.urlencoded({ extended: true }));
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({ type: ['application/fhir+json', 'application/json+fhir']}));
 
 	// Enable this if necessary to use put and delete, currently, we do not need it so don't enable it
 	// app.use(methodOverride());
