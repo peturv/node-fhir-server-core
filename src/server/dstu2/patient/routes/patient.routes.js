@@ -25,7 +25,7 @@ module.exports = (app, config, logger) => {
 				route.path,
 				cors(corsOptions),
 				//sanitizeMiddleware(route.args),
-				//validate(route.scopes, logger, config),
+				validate(route.scopes, logger, config),
 				route.controller(patientProfile, logger, config)
 			);
 		});
