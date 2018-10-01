@@ -180,7 +180,7 @@ module.exports.initialize = async ({ config, logger }) => {
 	// Add some configurations to our app
 	configureMiddleware(app, IS_PRODUCTION);
 	configureSession(app, server);
-	secureHeaders(app, USE_HTTPS);
+	//secureHeaders(app, USE_HTTPS);
 	setupRoutes(app, config, logger);
 	setupErrorHandler(app, logger);
 
