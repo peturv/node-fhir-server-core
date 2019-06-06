@@ -75,6 +75,20 @@ let routes = [
 		}],
 		scopes: scopes,
 		controller: controller.getPatientById
+	},
+	{
+		type: 'put',
+		path: '/dstu2/patient/:id',
+		corsOptions: {
+			methods: ['PUT']
+		},
+		args: [{
+			name: 'id',
+			type: 'string',
+			required: true
+		}],
+		scopes: scopes,
+		controller: controller.updatePatient
 	}
 ];
 

@@ -53,8 +53,6 @@ module.exports.getPatient = (profile, logger, config) => {
 				next(errors.internal(err.message));
 			});
 	};
-
-
 };
 
 
@@ -86,6 +84,32 @@ module.exports.getPatientById = (profile, logger) => {
 				} else {
 					next(errors.notFound('Patient not found'));
 				}
+			})
+			.catch((err) => {
+				next(errors.internal(err.message));
+			});
+	};
+};
+
+
+module.exports.updatePatient = (profile, logger, config) => {
+	let { serviceModule: service } = profile;
+
+	// Create a context I can pass some data through
+	let context = {
+		version: VERSIONS.DSTU2
+	};
+
+	return (req, res, next) => {
+		// @TODO Validate arguments and response
+		/**
+		* return service.getPatient(req, logger)
+		*		.then(sanitizeResponse) // Only show the user what they are allowed to see
+		*		.then(validateResponse); // Make sure the response data conforms to the spec
+		*/
+		return service.updatePatient(req, logger, context)
+			.then((results) => {
+				res.status(200).send();
 			})
 			.catch((err) => {
 				next(errors.internal(err.message));
